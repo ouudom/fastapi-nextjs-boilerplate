@@ -1,12 +1,19 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.exceptions import HTTPException as FastAPIHTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.v1.router import router as v1_router
 from app.core.config import settings
-from app.core.exceptions import AppException, app_exception_handler, unhandled_exception_handler
+from app.core.exceptions import (
+    AppException,
+    app_exception_handler,
+    http_exception_handler,
+    unhandled_exception_handler,
+    validation_exception_handler,
+)
 from app.core.logging import get_logger, setup_logging
 from app.middleware.logging import LoggingMiddleware
 
@@ -48,12 +55,13 @@ def create_app() -> FastAPI:
     if settings.is_production:
         app.add_middleware(TrustedHostMiddleware, allowed_hosts=["yourdomain.com", "*.yourdomain.com"])
 
-    # Redis rate limiting:
     from app.middleware.rate_limit import RateLimitMiddleware
     app.add_middleware(RateLimitMiddleware)
 
     # ── Exception handlers ─────────────────────────────────────────────────────
     app.add_exception_handler(AppException, app_exception_handler)  # type: ignore
+    app.add_exception_handler(FastAPIHTTPException, http_exception_handler)  # type: ignore
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore
     app.add_exception_handler(Exception, unhandled_exception_handler)
 
     # ── Routers ────────────────────────────────────────────────────────────────

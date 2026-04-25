@@ -1,5 +1,8 @@
 from fastapi import HTTPException, Request, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+
+from app.shared.schemas import err
 
 
 class AppException(HTTPException):
@@ -37,7 +40,26 @@ class ConflictException(AppException):
 async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,
-        content={"detail": exc.detail, "status_code": exc.status_code},
+        content=err(str(exc.detail), status_code=exc.status_code).model_dump(),
+    )
+
+
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=err(str(exc.detail), status_code=exc.status_code).model_dump(),
+    )
+
+
+async def validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    errors = [{k: v for k, v in e.items() if k != "url"} for e in exc.errors()]
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=err("Validation error", status_code=422).model_copy(
+            update={"data": errors}
+        ).model_dump(),
     )
 
 
@@ -47,5 +69,5 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
     log.error("unhandled_exception", exc_info=exc, path=request.url.path)
     return JSONResponse(
         status_code=500,
-        content={"detail": "Internal server error", "status_code": 500},
+        content=err("Internal server error", status_code=500).model_dump(),
     )

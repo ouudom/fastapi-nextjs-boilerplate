@@ -1,9 +1,8 @@
 from fastapi import APIRouter
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import DbDep
 from app.core.config import settings
+from app.shared.deps import DbDep
 
 router = APIRouter()
 

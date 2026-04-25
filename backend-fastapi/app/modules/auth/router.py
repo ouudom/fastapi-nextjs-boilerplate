@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from app.api.deps import DbDep
-from app.schemas.auth import LoginRequest, RefreshRequest, TokenResponse
-from app.services.auth import AuthService
+from app.modules.auth.schemas import LoginRequest, RefreshRequest, TokenResponse
+from app.modules.auth.service import AuthService
+from app.shared.deps import DbDep
 
 router = APIRouter()
 

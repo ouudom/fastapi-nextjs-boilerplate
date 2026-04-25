@@ -15,6 +15,7 @@ if config.config_file_name is not None:
 # Import all models so Alembic can detect schema changes
 from app.db.base import Base  # noqa: E402
 from app.core.config import settings  # noqa: E402
+from app.modules.users.model import User  # noqa: E402, F401
 
 target_metadata = Base.metadata
 

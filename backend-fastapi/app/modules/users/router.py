@@ -3,10 +3,10 @@ import uuid
 
 from fastapi import APIRouter, Query, status
 
-from app.api.deps import CurrentUser, DbDep, SuperUser
-from app.schemas.common import MessageResponse, PaginatedResponse
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
-from app.services.user import UserService
+from app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
+from app.modules.users.service import UserService
+from app.shared.deps import CurrentUser, DbDep, SuperUser
+from app.shared.schemas import MessageResponse, PaginatedResponse
 
 router = APIRouter()
 

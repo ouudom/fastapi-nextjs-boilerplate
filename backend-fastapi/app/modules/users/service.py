@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ConflictException, NotFoundException
 from app.core.security import hash_password
-from app.models.user import User
-from app.repositories.user import UserRepository
-from app.schemas.user import UserCreate, UserUpdate
+from app.modules.users.model import User
+from app.modules.users.repository import UserRepository
+from app.modules.users.schemas import UserCreate, UserUpdate
 
 
 class UserService:

@@ -3,7 +3,7 @@ import asyncio
 
 from app.db.session import AsyncSessionLocal
 from app.core.security import hash_password
-from app.models.user import User
+from app.modules.users.model import User
 
 
 async def main():

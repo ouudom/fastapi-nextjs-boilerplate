@@ -7,9 +7,9 @@ from app.core.security import (
     decode_token,
     verify_password,
 )
-from app.models.user import User
-from app.repositories.user import UserRepository
-from app.schemas.auth import TokenResponse
+from app.modules.auth.schemas import TokenResponse
+from app.modules.users.model import User
+from app.modules.users.repository import UserRepository
 
 
 class AuthService:

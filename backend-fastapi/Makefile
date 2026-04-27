@@ -31,4 +31,4 @@ downgrade:
 
 # Utils
 superuser:
-	python scripts/create_superuser.py
+	PYTHONPATH=. python scripts/create_superuser.py

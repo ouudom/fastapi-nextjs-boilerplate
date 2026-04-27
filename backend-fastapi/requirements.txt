@@ -6,6 +6,7 @@ python-multipart==0.0.9
 # Database
 sqlalchemy==2.0.35
 alembic==1.13.3
+greenlet==3.0.2           # for async SQLAlchemy
 asyncpg==0.29.0          # async postgres driver
 psycopg2-binary==2.9.9   # sync fallback / alembic
 

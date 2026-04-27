@@ -1,0 +1,1 @@
+- [Trade Terminal Project Setup Status](project_setup_status.md) — Migration config fix, Python 3.12, blockers with bcrypt and email-validator
